@@ -1,37 +1,33 @@
-#include "lists.h"
+#include <stdio.h>
+#include <stddef.h>
 
-/**
- * print_listint - prints all the elements of a linked list
- * @h: linked list of type listint_t to print
- *
- * Return: number of nodes
- */
-size_t print_listint(const listint_t *h)
-{
-	size_t num = 0;
-	const listint_t *current = h;
+typedef struct listint_t {
+    int data;
+    struct listint_t *next;
+} listint_t;
 
-	/* Set an appropriate buffer size */
-	const int BUFFER_SIZE = 1024;
-	int buffer[BUFFER_SIZE];
-	int buffer_index = 0;
+size_t print_listint(const listint_t *h) {
+    size_t count = 0;
+    
+    while (h != NULL) {
+        printf("%d\n", h->data);
+        h = h->next;
+        count++;
+    }
+    
+    return count;
+}
 
-	while (current)
-	{
-		buffer[buffer_index++] = current->n;
-		current = current->next;
+int main() {
+    listint_t node1 = {1, NULL};
+    listint_t node2 = {2, NULL};
+    listint_t node3 = {3, NULL};
 
-		if (buffer_index == BUFFER_SIZE || current == NULL)
-		{
-			/* Print all buffered values at once */
-			for (int i = 0; i < buffer_index; i++)
-				printf("%d\n", buffer[i]);
+    node1.next = &node2;
+    node2.next = &node3;
 
-			buffer_index = 0;
-		}
+    size_t count = print_listint(&node1);
+    printf("Number of nodes: %lu\n", count);
 
-		num++;
-	}
-
-	return (num);
+    return 0;
 }
